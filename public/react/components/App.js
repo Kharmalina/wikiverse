@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PagesList } from './PagesList';
+import { Article } from "./Article"
+
 
 // import and prepend the api url to any fetch calls
 import apiURL from '../api';
@@ -7,9 +9,10 @@ import apiURL from '../api';
 export const App = () => {
 
 	const [pages, setPages] = useState([]);
+	// console.log(pages)
 
 	// set the article data on state (a new piece of state)
-	const [article, setArticle] = useState()
+	const [article, setArticle] = useState(null)
 
 	async function fetchPages(){
 		try {
@@ -26,11 +29,27 @@ export const App = () => {
 		fetchPages();
 	}, []);
 
-	return (
-		<main>	
-      <h1>WikiVerse</h1>
-			<h2>An interesting 📚</h2>
-			<PagesList pages={pages} article={article} setArticle={setArticle}/>
-		</main>
-	)
+
+	const fetchArticleData = async (page) => {
+		// console.log(page)
+		const res = await fetch (`${apiURL}/wiki/${page.slug}`);
+		const articleData = await res.json();
+		setArticle(articleData)
+		console.log(articleData)
+	  }
+
+	return <>
+		{
+			article ?
+			<div>
+				<Article setArticle={setArticle} article={article}/>
+			</div> 
+			: 
+			<main>	
+				<h1>WikiVerse</h1>
+				  	<h2>An interesting 📚</h2>
+				  	<PagesList pages={pages} fetchArticleData={fetchArticleData}/>
+			</main>
+		}
+	</>
 }
