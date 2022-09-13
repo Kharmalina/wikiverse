@@ -3,7 +3,7 @@ import React from "react";
 import apiURL from '../api';
 
 
-export function Article ({article, setArticle, pages, setPages}) {
+export function Article ({article, setArticle, pages, setPages, buttonText, setButtonText}) {
 
     const day = new Date(article.createdAt).getUTCDate();
     const month = new Date(article.createdAt).getUTCMonth();
@@ -12,6 +12,7 @@ export function Article ({article, setArticle, pages, setPages}) {
     console.log(article)
     
     const handleClick = async () => {
+        window.location.reload(false)
         // console.log(article)
         const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
              method: "DELETE"
@@ -21,6 +22,7 @@ export function Article ({article, setArticle, pages, setPages}) {
         const res = await fetch(`${apiURL}/wiki`);
         const pagesData = await res.json();
         setPages(pagesData);
+        // setButtonText(false)
     }
 
 
@@ -39,12 +41,11 @@ export function Article ({article, setArticle, pages, setPages}) {
                 article.tags.map((tag, idx) => <div key={idx}>{tag.name}</div>)
             }
             </div>
-            <br></br>
             {/* null is false as a falsy value */}
             <br></br>
             <button onClick={handleClick}>DELETE</button>
             <br></br>
-            <button onClick={() => setArticle(null)}>Back to Wiki List!</button>
+            <button onClick={() => setArticle(null)}>If you change your mind...Back to Wiki List!</button>
         </div>
     </>
 }

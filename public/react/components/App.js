@@ -18,6 +18,9 @@ export const App = () => {
 	// set a boolean to true on state 
 	const [isAddingArticle, setIsAddingArticle] = useState(false)
 
+	// DELETE Button will change to button and text 
+	const [buttonText, setButtonText] = useState(true)
+
 	async function fetchPages(){
 		try {
 			const response = await fetch(`${apiURL}/wiki`);
@@ -47,7 +50,7 @@ export const App = () => {
 			<main>
 				{article ? (
 					<div>
-						<Article setArticle={setArticle} article={article} pages={pages} setPages={setPages}/>
+						<Article setArticle={setArticle} article={article} pages={pages} setPages={setPages} buttonText={buttonText} setButtonText={setButtonText}/>
 					</div> 
 				) : isAddingArticle ? (
 					<div>
