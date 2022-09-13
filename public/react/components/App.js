@@ -23,7 +23,7 @@ export const App = () => {
 			const response = await fetch(`${apiURL}/wiki`);
 			const pagesData = await response.json();
 			setPages(pagesData);
-			console.log(pagesData)
+			// console.log(pagesData)
 		} catch (err) {
 			console.log("Oh no an error! ", err)
 		}
@@ -39,7 +39,7 @@ export const App = () => {
 		const res = await fetch (`${apiURL}/wiki/${page.slug}`);
 		const articleData = await res.json();
 		setArticle(articleData)
-		console.log(articleData)
+		// console.log(articleData)
 	  }
 
 	return (
@@ -47,7 +47,7 @@ export const App = () => {
 			<main>
 				{article ? (
 					<div>
-						<Article setArticle={setArticle} article={article}/>
+						<Article setArticle={setArticle} article={article} pages={pages} setPages={setPages}/>
 					</div> 
 				) : isAddingArticle ? (
 					<div>
@@ -57,7 +57,7 @@ export const App = () => {
 						<h1>WikiVerse</h1>
 				  		<h2>An interesting 📚</h2>
 				  		<PagesList pages={pages} fetchArticleData={fetchArticleData}/>
-						<button onClick={() => setIsAddingArticle(true)} className={isAddingArticle ? < AddArticle /> : null}>Create Page</button>
+						<button onClick={() => setIsAddingArticle(true)}>Create Page</button>
 					</section>}
 			</main>
 		</>

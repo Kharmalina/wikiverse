@@ -1,10 +1,28 @@
 import React from "react";
 
-export function Article ({article, setArticle}) {
+import apiURL from '../api';
+
+
+export function Article ({article, setArticle, pages, setPages}) {
 
     const day = new Date(article.createdAt).getUTCDate();
     const month = new Date(article.createdAt).getUTCMonth();
     const year = new Date(article.createdAt).getUTCFullYear();
+
+    console.log(article)
+    
+    const handleClick = async () => {
+        // console.log(article)
+        const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
+             method: "DELETE"
+        });
+        const data = await response.json();
+
+        const res = await fetch(`${apiURL}/wiki`);
+        const pagesData = await res.json();
+        setPages(pagesData);
+    }
+
 
     return <>
         <div className="article">
@@ -14,6 +32,8 @@ export function Article ({article, setArticle}) {
             <br></br>
             <div><strong>Published: </strong>{`${month + 1}/${day}/${year}`}</div>
             <br></br>
+            <div>{article.content}</div>
+            <br></br>
             <div><strong>Tags: </strong>
             {
                 article.tags.map((tag, idx) => <div key={idx}>{tag.name}</div>)
@@ -21,6 +41,8 @@ export function Article ({article, setArticle}) {
             </div>
             <br></br>
             {/* null is false as a falsy value */}
+            <br></br>
+            <button onClick={handleClick}>DELETE</button>
             <br></br>
             <button onClick={() => setArticle(null)}>Back to Wiki List!</button>
         </div>
