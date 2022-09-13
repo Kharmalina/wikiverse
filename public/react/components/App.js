@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PagesList } from './PagesList';
 import { Article } from "./Article"
 import { Form } from '././Form';
+import { Update } from "./Update"
 
 
 // import and prepend the api url to any fetch calls
@@ -20,6 +21,9 @@ export const App = () => {
 
 	// DELETE Button will change to button and text 
 	const [buttonText, setButtonText] = useState(true)
+
+	// updating an article
+	const [isUpdatingArticle, setIsUpdatingArticle] = useState(false)
 
 	async function fetchPages(){
 		try {
@@ -50,7 +54,7 @@ export const App = () => {
 			<main>
 				{article ? (
 					<div>
-						<Article setArticle={setArticle} article={article} pages={pages} setPages={setPages} buttonText={buttonText} setButtonText={setButtonText}/>
+						<Article setArticle={setArticle} article={article} pages={pages} setPages={setPages} buttonText={buttonText} setButtonText={setButtonText} isUpdatingArticle={isUpdatingArticle} setIsUpdatingArticle={setIsUpdatingArticle}/>
 					</div> 
 				) : isAddingArticle ? (
 					<div>
@@ -63,6 +67,7 @@ export const App = () => {
 						<button onClick={() => setIsAddingArticle(true)}>Create Page</button>
 					</section>}
 			</main>
+			<footer>Wikiverse 2022</footer>
 		</>
 	)
 }

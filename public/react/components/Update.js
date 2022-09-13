@@ -3,15 +3,15 @@ import React, {useState} from "react";
 import apiURL from '../api';
 
 
-export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
+export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages, article, setArticle}) {
 
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const [title, setTitle] = useState(article.title);
+    const [content, setContent] = useState(article.content);
 
-    const [authorName, setAuthorName] = useState("");
-    const [authorEmail, setAuthorEmail] = useState("");
+    const [authorName, setAuthorName] = useState(article.author.name);
+    const [authorEmail, setAuthorEmail] = useState(article.author.email);
 
-    const [tags, setTags] = useState("");
+    const [tags, setTags] = useState(article.tags[0].name);
 
     // console.log({title})
 
@@ -23,50 +23,45 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
     //     tags: "tagalicious123"
     //   };
 
-      const handleSubmit = async (event) => {
+    // console.log(pages) // entire array of current article list
+
+    console.log(article) // one article/object
+
+        const handleSubmit = async (event) => {
+        window.location.reload(false)
         event.preventDefault();
-        try {
-        const response = await fetch(`${apiURL}/wiki`, {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-            //   articleData // our data TO CREATE here
-            {
+            const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': `Bearer ${token}`
+                },
+            body: JSON.stringify({
+            // our NEW/UPDATED data here
                 title: title,
                 content: content,
                 name: authorName,
                 email: authorEmail,
                 tags: tags
-            }
-            )
-          });
-          const data = await response.json();
-
-        //   console.log(data.title)
-        //   I need lines 49-51 if not I have to manually refresh to see the new submitted page
-          setPages([...pages,
+            })
+        })
+            const data = await response.json();
+            setPages([...pages,
                 data
             ]);
-        } catch (err) {
-            console.log(err)
-        }  
-          setTitle("");
-          setContent("");
-          setAuthorName("");
-          setAuthorEmail("");
-          setTags("");
-	  }
 
-
-      
+            setTitle("");
+            setContent("");
+            setAuthorName("");
+            setAuthorEmail("");
+            setTags("");
+    }
 
 
     return (
         <>
             <h1>WikiVerse</h1>
-            <h2>Add a Page</h2>
+            <h2>Update an Article</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                 <input placeholder="Title" type="text" aria-label="title" value={title} onChange={event => setTitle(event.target.value)}/>
@@ -83,8 +78,8 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
                 <div>
                 <input placeholder="Tags" type="text" aria-label="tags" value={tags} onChange={event => setTags(event.target.value)} />
                 </div>
-                <button type="submit" >Create a Page!</button>
-                <button onClick={() => setIsAddingArticle(false)}>Back to Wiki List!</button>
+                <button type="submit" >Update an Article!</button>
+                <button onClick={() => setIsUpdatingArticle(false)}>Back to Article</button>
             </form>
         </>
     )
