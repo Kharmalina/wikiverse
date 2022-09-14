@@ -11,7 +11,10 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
     const [authorName, setAuthorName] = useState(article.author.name);
     const [authorEmail, setAuthorEmail] = useState(article.author.email);
 
-    const [tags, setTags] = useState(article.tags[0].name);
+    const tagName = article.tags.map((tag) => tag.name)
+    console.log(tagName)
+
+    const [tags, setTags] = useState(tagName);
 
     // console.log({title})
 
@@ -23,11 +26,11 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
     //     tags: "tagalicious123"
     //   };
 
-    // console.log(pages) // entire array of current article list
+    console.log(pages) // entire array of current article list
 
-    console.log(article) // one article/object
+    // console.log(article) // one article/object
 
-        const handleSubmit = async (event) => {
+        const handleUpdate = async (event) => {
         window.location.reload(false)
         event.preventDefault();
             const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
@@ -46,10 +49,31 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
             })
         })
             const data = await response.json();
-            setPages([...pages,
-                data
-            ]);
+            console.log(data)
+            // setPages([...pages,
+            //     data
+            // ]);
 
+            setArticle({...article,
+                author: {
+                    ...article.author,
+                    name: authorName,
+                    email: authorEmail
+                },
+                tags: [{
+                    ...article.tags,
+                    tags: tags
+                }]
+            })
+
+            // setArticle({...article,
+            //     tags: [{
+            //         ...article.tags,
+            //         tags: tags
+            //     }]
+            // })
+
+            console.log(article)
             setTitle("");
             setContent("");
             setAuthorName("");
@@ -62,7 +86,7 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
         <>
             <h1>WikiVerse</h1>
             <h2>Update an Article</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleUpdate}>
                 <div>
                 <input placeholder="Title" type="text" aria-label="title" value={title} onChange={event => setTitle(event.target.value)}/>
                 </div>
