@@ -12,7 +12,7 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
     const [authorEmail, setAuthorEmail] = useState(article.author.email);
 
     const tagName = article.tags.map((tag) => tag.name)
-    console.log(tagName)
+    // console.log(tagName)
 
     const [tags, setTags] = useState(tagName);
 
@@ -26,13 +26,13 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
     //     tags: "tagalicious123"
     //   };
 
-    console.log(pages) // entire array of current article list
+    // console.log(pages) // entire array of current article list
 
     // console.log(article) // one article/object
 
         const handleUpdate = async (event) => {
-        window.location.reload(false)
-        event.preventDefault();
+        // window.location.reload(false)
+        try{event.preventDefault();
             const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
                 method: 'PUT',
                 headers: {
@@ -49,7 +49,7 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
             })
         })
             const data = await response.json();
-            console.log(data)
+            console.log("this one here", data)
             // setPages([...pages,
             //     data
             // ]);
@@ -79,6 +79,16 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
             setAuthorName("");
             setAuthorEmail("");
             setTags("");
+        } catch (err){
+            console.log("update error", err);
+            if (err.name === 'SequelizeUniqueConstraintError') {
+                response.status(403)
+                response.send({ status: 'error', message: "User already exists"});
+            } else {
+                response.status(500)
+                response.send({ status: 'error', message: "Something went wrong"});
+            }
+        }
     }
 
 
@@ -102,7 +112,7 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
                 <div>
                 <input placeholder="Tags" type="text" aria-label="tags" value={tags} onChange={event => setTags(event.target.value)} />
                 </div>
-                <button type="submit" >Update an Article!</button>
+                <button type="submit" >Edit Article!</button>
                 <button onClick={() => setIsUpdatingArticle(false)}>Back to Article</button>
             </form>
         </>

@@ -49,14 +49,15 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
           setPages([...pages,
                 data
             ]);
+
+            setTitle("");
+            setContent("");
+            setAuthorName("");
+            setAuthorEmail("");
+            setTags("");
         } catch (err) {
-            console.log(err)
+            console.log("form error", err)
         }  
-          setTitle("");
-          setContent("");
-          setAuthorName("");
-          setAuthorEmail("");
-          setTags("");
 	  }
 
 
@@ -83,7 +84,7 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
                 <div>
                 <input placeholder="Tags" type="text" aria-label="tags" value={tags} onChange={event => setTags(event.target.value)} />
                 </div>
-                <button type="submit" >Create a Page!</button>
+                <button type="submit" >Create an Article!</button>
                 <button onClick={() => setIsAddingArticle(false)}>Back to Wiki List!</button>
             </form>
         </>

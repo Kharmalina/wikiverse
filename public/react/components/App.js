@@ -64,10 +64,10 @@ export const App = () => {
 						<h1>WikiVerse</h1>
 				  		<h2>An interesting 📚</h2>
 				  		<PagesList pages={pages} fetchArticleData={fetchArticleData}/>
-						<button onClick={() => setIsAddingArticle(true)}>Create Page</button>
+						<button onClick={() => setIsAddingArticle(true)}>Add an Article!</button>
 					</section>}
 			</main>
-			<footer>Wikiverse 2022</footer>
+			<footer>ⓒ Wikiverse 2022</footer>
 		</>
 	)
 }
