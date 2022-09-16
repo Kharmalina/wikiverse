@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { PagesList } from './PagesList';
 import { Article } from "./Article"
 import { Form } from '././Form';
-import { Update } from "./Update"
 
 
 // import and prepend the api url to any fetch calls
@@ -67,7 +66,7 @@ export const App = () => {
 						<button onClick={() => setIsAddingArticle(true)}>Add an Article!</button>
 					</section>}
 			</main>
-			<footer>ⓒ Wikiverse 2022</footer>
+			<footer>&copy; Wikiverse 2022</footer>
 		</>
 	)
 }

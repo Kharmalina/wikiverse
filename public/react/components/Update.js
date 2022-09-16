@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import apiURL from '../api';
 
@@ -15,23 +15,84 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
     // console.log(tagName)
 
     const [tags, setTags] = useState(tagName);
+    // console.log(tagName)
+    // console.log(tags)
 
-    // console.log({title})
 
-    // const articleData = {
-    //     title: "Title is interesting2",
-    //     content: "This article is interesting",
-    //     name: "Ryan",
-    //     email: "ryan@example.com",
-    //     tags: "tagalicious123"
-    //   };
-
-    // console.log(pages) // entire array of current article list
-
-    // console.log(article) // one article/object
-
-        const handleUpdate = async (event) => {
+    const handleUpdate = async (event) => {
+            
         // window.location.reload(false)
+        // event.preventDefault();
+            const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': `Bearer ${token}`
+                },
+            body: JSON.stringify({
+            // our NEW/UPDATED data here
+                title: title,
+                content: content,
+                name: authorName,
+                email: authorEmail,
+                tags: tags
+            })
+        })
+            const data = await response.json();
+            console.log("this one here", data)
+            // setPages([...pages,
+            //     data
+            // ]);
+
+            // setArticle({...article,
+            //     author: {
+            //         ...article.author,
+            //         name: authorName,
+            //         email: authorEmail
+            //     },
+            //     tags: [{
+            //         ...article.tags,
+            //         tags: tags
+            //     }]
+            // })
+
+            // setArticle({...article,
+            //     tags: [{
+            //         ...article.tags,
+            //         tags: tags
+            //     }]
+            // })
+
+            console.log(article)
+            
+            // setTitle(title);
+            // setContent(content);
+            // setAuthorName(authorName);
+            // setAuthorEmail(authorEmail);
+            // setTags(tags);
+
+            // setTitle("");
+            // setContent("");
+            // setAuthorName("");
+            // setAuthorEmail("");
+            setTags("");
+
+
+ 
+        
+
+
+        // setIsUpdatingArticle(false)
+        // setArticle(null)
+    }
+
+    useEffect(() => {
+		handleUpdate();
+	}, []);
+
+    const handleUpdateReal = async (event) => {
+            
+        window.location.reload(false)
         try{event.preventDefault();
             const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
                 method: 'PUT',
@@ -54,17 +115,17 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
             //     data
             // ]);
 
-            setArticle({...article,
-                author: {
-                    ...article.author,
-                    name: authorName,
-                    email: authorEmail
-                },
-                tags: [{
-                    ...article.tags,
-                    tags: tags
-                }]
-            })
+            // setArticle({...article,
+            //     author: {
+            //         ...article.author,
+            //         name: authorName,
+            //         email: authorEmail
+            //     },
+            //     tags: [{
+            //         ...article.tags,
+            //         tags: tags
+            //     }]
+            // })
 
             // setArticle({...article,
             //     tags: [{
@@ -74,11 +135,11 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
             // })
 
             console.log(article)
-            setTitle("");
-            setContent("");
-            setAuthorName("");
-            setAuthorEmail("");
-            setTags("");
+            // setTitle("");
+            // setContent("");
+            // setAuthorName("");
+            // setAuthorEmail("");
+            // setTags("");
         } catch (err){
             console.log("update error", err);
             if (err.name === 'SequelizeUniqueConstraintError') {
@@ -89,14 +150,18 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
                 response.send({ status: 'error', message: "Something went wrong"});
             }
         }
-    }
 
+
+        // setIsUpdatingArticle(false)
+        // setArticle(null)
+    }
+    
 
     return (
         <>
             <h1>WikiVerse</h1>
             <h2>Update an Article</h2>
-            <form onSubmit={handleUpdate}>
+            <form onSubmit={handleUpdateReal}>
                 <div>
                 <input placeholder="Title" type="text" aria-label="title" value={title} onChange={event => setTitle(event.target.value)}/>
                 </div>
@@ -112,8 +177,11 @@ export function Update({isUpdatingArticle, setIsUpdatingArticle, pages, setPages
                 <div>
                 <input placeholder="Tags" type="text" aria-label="tags" value={tags} onChange={event => setTags(event.target.value)} />
                 </div>
+                <br></br>
+                <h4><strong>*Original tags will be lost once updated*</strong></h4>
                 <button type="submit" >Edit Article!</button>
                 <button onClick={() => setIsUpdatingArticle(false)}>Back to Article</button>
+                {/* <button onClick={() => setArticle(false)}>Back to Wiki List</button> */}
             </form>
         </>
     )

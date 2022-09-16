@@ -58,6 +58,8 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
         } catch (err) {
             console.log("form error", err)
         }  
+
+        setIsAddingArticle(false)
 	  }
 
 
@@ -84,6 +86,7 @@ export function Form({isAddingArticle, setIsAddingArticle, pages, setPages}) {
                 <div>
                 <input placeholder="Tags" type="text" aria-label="tags" value={tags} onChange={event => setTags(event.target.value)} />
                 </div>
+                <br></br>
                 <button type="submit" >Create an Article!</button>
                 <button onClick={() => setIsAddingArticle(false)}>Back to Wiki List!</button>
             </form>

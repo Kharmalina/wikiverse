@@ -93,11 +93,18 @@ router.put("/:slug", async (req, res, next) => {
       })
     );
 
-    await updatedPages[0].setTags(tags);
+    // await updatedPages[0].setTags(tags);
 
     // await updatedPages[0].setAuthor(user);
 
-    res.send(updatedPages[0]);
+    const page = await Page.findOne(
+      {where: {slug: req.params.slug}}
+    );
+    
+    await page.setTags(tags);
+    await page.setAuthor(user);
+
+    res.send(page);
   } catch (error) {
     next(error);
   }

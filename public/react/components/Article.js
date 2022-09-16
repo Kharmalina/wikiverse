@@ -15,7 +15,7 @@ export function Article ({article, setArticle, pages, setPages, buttonText, setB
     // console.log(article) // particular article/object 
     
     const handleClick = async () => {
-        window.location.reload(false)
+        // window.location.reload(false)
         // console.log(article)
         const response = await fetch(`${apiURL}/wiki/${article.slug}`, {
              method: "DELETE"
@@ -26,6 +26,7 @@ export function Article ({article, setArticle, pages, setPages, buttonText, setB
         const pagesData = await res.json();
         setPages(pagesData);
         // setButtonText(false)
+        setArticle(null)
     }
 
 
